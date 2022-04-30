@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 DATA = {
     'omlet': {
@@ -16,8 +17,34 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
-    # можете добавить свои рецепты ;)
 }
+
+def recipe_omlet_view(request):
+    serving = int(request.GET.get('serving', 1))
+    context = {}
+    context['recipe'] = {}
+    for item in DATA['omlet']:
+        context['recipe'][item] = DATA['omlet'][item] * serving
+    result = render(request, 'calculator/index.html', context)
+    return HttpResponse(result)
+
+def recipe_pasta_view(request):
+    serving = int(request.GET.get('serving', 1))
+    context = {}
+    context['recipe'] = {}
+    for item in DATA['pasta']:
+        context['recipe'][item] = DATA['pasta'][item] * serving
+    result = render(request, 'calculator/index.html', context)
+    return HttpResponse(result)
+
+def recipe_buter_view(request):
+    serving = int(request.GET.get('serving', 1))
+    context = {}
+    context['recipe'] = {}
+    for item in DATA['buter']:
+        context['recipe'][item] = DATA['buter'][item] * serving
+    result = render(request, 'calculator/index.html', context)
+    return HttpResponse(result)
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)

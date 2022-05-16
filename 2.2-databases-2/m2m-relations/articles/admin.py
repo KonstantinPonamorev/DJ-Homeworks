@@ -6,16 +6,15 @@ from .models import Article, Tag, ArticleTags
 
 
 class ArticleTagsInlineFormset(BaseInlineFormSet):
-    def check_is_main(self):
-        check_dict = {}
+    def clean(self):
+        Is_main = False
         for form in self.forms:
-            if check_dict[form.cleaned_data['article_id']]:
+            if form.cleaned_data['is_main'] and Is_main:
                 raise ValidationError('Основным может быть только один раздел')
+            elif form.cleaned_data['is_main']:
+                Is_main = True
             else:
-                if form.cleaned_data['is_main']:
-                    check_dict[form.cleaned_data['article_id']] = True
-                else:
-                    raise ValidationError('Укажите основной раздел')
+                raise ValidationError('Укажите основной раздел')
         return super().check_is_main()
 
 
@@ -34,4 +33,4 @@ class ArticleAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
-    inlines = [ArticleTagsInline, ]
+    # inlines = [ArticleTagsInline, ]

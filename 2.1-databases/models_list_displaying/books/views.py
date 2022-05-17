@@ -17,11 +17,12 @@ def books_view(request):
 def books_pub_date(request, pub_date):
     template = 'books/books_list.html'
     books_objects = Book.objects.filter(pub_date=pub_date)
-    # books_objects = Book.objects.order_by('pub_date')
-    # paginator = Paginator(books_objects, 5)
-    # page = paginator.get_page(1)
+    books_next = Book.objects.filter(pub_date__gt=pub_date).order_by('pub_date').first()
+    books_previous = Book.objects.filter(pub_date__lt=pub_date).order_by('-pub_date').first()
     context = {
-        'books': books_objects
+        'books': books_objects,
+        'next_book': books_next,
+        'previous_book': books_previous,
     }
     return render(request, template, context)
 

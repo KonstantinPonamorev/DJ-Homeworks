@@ -18,5 +18,11 @@
                 </div>
             {% endfor %}
         </div>
+    {% if previous_book.pub_date %}
+    <a href="{% url 'book' previous_book.pub_date %}">Назад</a>
+    {% endif %}
+    {% if next_book.pub_date %}
+    <a href="{% url 'book' next_book.pub_date %}">Вперед</a>
+    {% endif %}
     </div>
 {% endblock %}

@@ -43,11 +43,11 @@ def student_factory():
 def test_get_course(client, url, course_factory):
     course = course_factory()
 
-    response = client.get(url)
+    response = client.get(url + f'{course.pk}/')
 
     assert response.status_code == 200
     data = response.json()
-    assert data[0]['name'] == course.name
+    assert data['name'] == course.name
 
 
 @pytest.mark.django_db
@@ -69,11 +69,11 @@ def test_get_course_by_id(client, url, course_factory):
     index = random.randrange(0, len(courses) - 1)
     course = courses[index]
 
-    response = client.get(url + f'{course.pk}/')
+    response = client.get(url)
 
     assert response.status_code == 200
     data = response.json()
-    assert data['name'] == course.name
+    assert data[index]['name'] == course.name
 
 
 @pytest.mark.django_db
